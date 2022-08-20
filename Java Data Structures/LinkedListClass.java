@@ -1,188 +1,92 @@
-public class LinkedListClass {
 
-    static Node head = null;
-    static int size;
 
-    public LinkedListClass(){
-        this.size = 0;
-    }
-
-    static class Node {
-        String data;
+//implementation of linked list
+class LinkedListClass{
+    //creating node
+    static Node head;
+    class Node{
+        int data;
         Node next;
-
-        public Node(String data) {
+        Node(int data){
             this.data = data;
-            this.next = null;
-            size++;
+            this.next =null;
         }
     }
-
-    public static void addFirst(String data) {
-        Node newNode = new Node(data);
-        if (head == null) {
+    //adding element at the start 
+     void addFirst(int val){
+        Node newNode = new Node(val);
+        if(head == null){
             head = newNode;
             return;
         }
         newNode.next = head;
-        head = newNode;
+        head = newNode;    
     }
-
-    public static void addLast(String data) {
-        Node newNode = new Node(data);
-        if (head == null) {
+    //adding element at the last of the list 
+     void addLast(int val){
+        Node newNode = new Node(val);
+        Node cur = head;
+        if(head == null){
             head = newNode;
             return;
-        }
-        Node currNode = head;
-        while (currNode.next != null) {
-            currNode = currNode.next;
-        }
-        currNode.next = newNode;
     }
-
-    public static void printList() {
-        if (head == null) {
-            System.out.println("List is empty.");
-            return;
-        }
-        Node currNode = head;
-        System.out.println();
-        while (currNode != null) {
-            System.out.print(currNode.data + " -> ");
-            currNode = currNode.next;
-        }
-        System.out.print("null");
+    while(cur.next!= null){
+        cur = cur.next;
     }
-
-    public static void removeFirst() {
-        if (head == null) {
-            System.out.println("List is empty.");
-            return;
-        }
-
-        if (head.next == null) {
-            head = null;
-        }
-        size--;
-        head = head.next;
+    cur.next = newNode;
     }
-
-    public static void removeLast() {
-        if (head == null) {
-            System.out.println("List is empty.");
-            return;
+    //delete element from the start of list 
+    int deleteFirst(){
+        if(head  == null){
+            System.out.print("List is empty");
+            return -1;   
         }
-
-        size--;
-        if(head.next == null) {
-            head = null;
-            return;
-        }
-
-        Node secondLast = head;
-        Node lastNode = head.next;
-
-        while (lastNode.next != null) {
-            lastNode = lastNode.next;
-            secondLast = secondLast.next;
-        }
-        secondLast.next = null;
+        int a = head.data;
+        head.next = head;
+        return a;
     }
-
-    public static int getSize(){
-        return size;
+    //delete element from the last
+    int deleteLast(){
+            Node cur = head;
+            if(head == null){
+               System.out.println("list is empty");
+               return -1;
+            }
+        while(cur.next.next!= null){
+            cur = cur.next;
+        }
+          int d =  cur.data;
+          cur.next = null;
+          return d;
     }
-
-    // 1. Iterative way
-    public static void reverseIterate(){
-        if(head == null || head.next == null) {
-            return;
+    //deleting node of given data 
+    void deleteGiven(int val){
+            Node cur = head;
+            if(head == null){
+                System.out.println("list is empty ");
+                return;
         }
-
-        Node prevNode = head;
-        Node currNode = head.next;
-        while (currNode != null){
-            Node nextNode = currNode.next;
-            currNode.next = prevNode;
-
-            // update
-            prevNode = currNode;
-            currNode = nextNode;
+        if(head.data == val){
+            head.next = head;
         }
-        head.next = null;
-        head = prevNode;
+        while(cur.next.data != val){
+            cur = cur.next;
+        }
+        cur.next = cur.next.next;
     }
-
-    // 2. Recursive way
-    public static Node reverseRecursive(Node head){
-        if (head == null || head.next == null) {
-            return head;
+    //PrintList
+    void printList(){
+        Node cur = head;
+            if(head == null){
+               System.out.println("list is empty");
+            }
+        while(cur!= null){
+            System.out.println(cur.data + " ");
+            cur = cur.next;
         }
-
-        Node newNode = reverseRecursive(head.next);
-        head.next.next = head;
-        head.next = null;
-
-        return newNode;
     }
-
-    public static Node removeNthFromEnd(Node head, int n){
-        if(head.next == null){
-            return null; 
-        }
-
-        int size = 0;
-        Node curr = head;
-        while(curr != null){
-            curr = curr.next;
-            size++;
-        }
-
-        if(n == size){
-            head = head.next;
-            return head;
-        }
-
-        int preOfNthNode = size - n;
-        Node prev = head;
-        int i = 1;
-        while(i < preOfNthNode){
-            prev = prev.next;
-            i++;
-        }
-        prev.next = prev.next.next;
-
-        return head;
-    }
-
-    /**
-     * @param args
-     */
+    
     public static void main(String[] args) {
         LinkedListClass ll = new LinkedListClass();
-        LinkedListClass.addFirst("Krishna");
-        LinkedListClass.addFirst("is");
-        LinkedListClass.addFirst("my");
-        LinkedListClass.addFirst("name");
-        LinkedListClass.addLast("last");
-        // printList();
-        // LinkedListClass.removeFirst();
-
-        LinkedListClass.printList();
-
-        LinkedListClass.reverseIterate();
-        LinkedListClass.printList();
-
-        LinkedListClass.head = reverseRecursive(LinkedListClass.head);
-        printList();
-        
-        System.out.println();
-        System.out.println(LinkedListClass.getSize());
-
-        System.out.println();
-        printList();
-        head = removeNthFromEnd(head, 5);
-        printList();
     }
 }
